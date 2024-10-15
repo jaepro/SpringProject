@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<annotation-driven /> <!-- 현재 기본적인 설정들은 스프링 알아서 해결하라는 태그 -->
+
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+	 <!-- 화면에 어떤 것을 뿌릴 것인지 jsp위주로 뿌릴 땐 다음과 같은 class를 사용함  / 얘도 리졸버임-->
+		<beans:property name="prefix" value="/WEB-INF"></beans:property> 
+		<beans:property name="suffix" value=".jsp"></beans:property> <!-- 확장자 정의 -->
+	</beans:bean>
+	
+	<!-- 파일 업로드를 위한 리졸버 (pom.xml에 maven코드 2개도 추가 입력해야 파일 업로드 가능함!! -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="5000000" /> <!-- 5MB -->
+	</beans:bean>
+	
+	<context:component-scan base-package="com.controller.SpringProject"></context:component-scan> <!-- 빈 설정한거임 -->
+	<context:component-scan base-package="user.controller"></context:component-scan> <!-- 빈 설정한거임 -->
+	
+	
+	<resources location="/WEB-INF/css/" mapping="/css/**"></resources> <!-- css는 디스패쳐로 가면 안되고 location위치로 가게 설정 -->
+	<resources location="/WEB-INF/js/" mapping="/js/**"></resources>
+	<resources location="/WEB-INF/image/" mapping="/image/**"/>
+	<resources location="/WEB-INF/storage/" mapping="/storage/**"/>
+	
+	
+</beans:beans>

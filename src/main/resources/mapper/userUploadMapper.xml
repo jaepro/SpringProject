@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="user.dao.UserUploadDAO">
+	
+	<!-- sql문을 실행할 때, 넘어오는 파라메터 타입이 List인 경우
+	forEach 태그의 collection 속성에 사용할 수 있는 이름은 list 또는 collection이 가능하다.
+	=> 이미지가 여러 개를 넣어야 할 땐, inser문이 여러 번 실행되어야 한다.-->
+	<insert id="upload">
+		insert into upload(imageName, imageContent, imageFileName, imageOriginalFileName)
+		values
+		<foreach collection="list" item="dto" separator=",">
+			(#{dto.imageName}, #{dto.imageContent}, #{dto.imageFileName}, #{dto.imageOriginalFileName})
+		</foreach>
+	</insert>
+	
+	<!-- 목록 -->
+	<select id="uploadList" resultType="userUploadDTO">
+		select * from upload order by seq desc
+	</select>
+	
+	<!-- 1개의 정보  -->
+	<select id="getUploadDTO" parameterType="String" resultType="UserUploadDTO">
+		select * from upload where seq=#{seq}
+	</select>
+	
+	<!-- getImageFileName 얻기 -->
+	<select id="getImageFileName" parameterType="int" resultType="String">
+		select imageFileName from upload where seq=#{seq}
+	</select>
+	
+	<!-- 수정 -->
+	<update id="uploadUpdate" parameterType="UserUploadDTO">
+		update upload set imageName=#{imageName},
+						  imageContent=#{imageContent},
+						  imageFileName=#{imageFileName},
+						  imageOriginalFileName=#{imageOriginalFileName}
+		where seq=#{seq}
+	</update>
+	
+	<!-- 네이버 클라우드에서 삭제 -->
+	<select id="getImageFileNames" parameterType="java.util.List" resultType="String">
+    select imageFileName from upload where seq in
+    (
+        <foreach collection="list" item="seq" separator=",">
+            #{seq}
+        </foreach>
+    )
+</select>
+	
+	<!-- DB에서 삭제 -->
+	<delete id="uploadDelete" parameterType="java.util.List">
+    delete from upload where seq in
+    (
+        <foreach collection="list" item="seq" separator=",">
+            #{seq}
+        </foreach>
+    )
+</delete>
+
+
+</mapper> 

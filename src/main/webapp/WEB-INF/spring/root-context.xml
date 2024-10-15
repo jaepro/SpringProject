@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<context:component-scan base-package="user.service.impl"></context:component-scan>
+	<context:component-scan base-package="spring.conf"></context:component-scan>
+	<context:component-scan base-package="user.bean"></context:component-scan>
+	<!-- <context:component-scan base-package="user.dao.impl"></context:component-scan> -->
+	
+	<!-- @Mapper   주의!!  beans와 context만 있으면 myBatis설정이 안됨!!
+	그러므로 namespace에서 mybatis-spring을 체크해야 함!!-->
+	<!-- <mybatis-spring:scan base-package="user.dao"/> 
+		SpringConfiguration에 @MapperScan을 작성하든 이걸 작성하든 둘 중 하나만 작성하면 됨
+	-->
+</beans>
